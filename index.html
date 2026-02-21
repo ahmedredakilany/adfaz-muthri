@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Muthri & Advaz | Media Pro Portal</title>
+    <title>Muthri & Advaz | Ultra Management Portal</title>
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
@@ -37,10 +37,10 @@
             scroll-behavior: smooth;
         }
 
-        /* Toast Notification */
+        /* Toast & Navbar */
         #toast {
             position: fixed;
-            bottom: 20px;
+            bottom: 25px;
             left: 50%;
             transform: translateX(-50%) translateY(100px);
             background: var(--accent);
@@ -48,7 +48,6 @@
             padding: 12px 25px;
             border-radius: 50px;
             font-weight: 700;
-            font-size: 14px;
             z-index: 9999;
             transition: var(--transition);
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
@@ -61,7 +60,6 @@
             transform: translateX(-50%) translateY(0);
         }
 
-        /* Navbar */
         nav {
             background: rgba(3, 5, 8, 0.85);
             backdrop-filter: blur(15px);
@@ -98,16 +96,14 @@
         .b-btn.active.m {
             background: var(--muthri);
             color: #000;
-            box-shadow: 0 0 20px rgba(0, 255, 163, 0.2);
         }
 
         .b-btn.active.a {
             background: var(--advaz);
             color: #fff;
-            box-shadow: 0 0 20px rgba(189, 0, 255, 0.2);
         }
 
-        /* Container */
+        /* Layout */
         .container {
             max-width: 1200px;
             margin: 30px auto;
@@ -136,7 +132,7 @@
             gap: 15px;
         }
 
-        /* Card Pro Styling */
+        /* Cards & Media */
         .card {
             background: var(--card);
             border-radius: 24px;
@@ -150,10 +146,8 @@
         .card:hover {
             transform: translateY(-8px);
             border-color: var(--accent);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
         }
 
-        /* Media Wrapper */
         .media-wrap {
             width: 100%;
             height: 200px;
@@ -171,16 +165,6 @@
             height: 100%;
             object-fit: cover;
             border: none;
-        }
-
-        .art-desc {
-            color: var(--dim);
-            font-size: 14px;
-            line-height: 1.7;
-            display: -webkit-box;
-            -webkit-line-clamp: 3;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
         }
 
         .link-item {
@@ -205,10 +189,9 @@
         .link-item img {
             width: 22px;
             height: 22px;
-            object-fit: contain;
         }
 
-        /* Dashboard Sidebar */
+        /* Sidebar Dashboard */
         #admin-sidebar {
             position: fixed;
             left: -100%;
@@ -271,7 +254,6 @@
             border: 1px solid #2d3748;
             color: #fff;
             border-radius: 12px;
-            outline: none;
             font-family: inherit;
         }
 
@@ -284,10 +266,44 @@
             border-radius: 12px;
             font-weight: 700;
             cursor: pointer;
-            transition: 0.3s;
         }
 
-        /* Modal */
+        /* Helpers */
+        .copy-box {
+            background: #000;
+            padding: 12px 15px;
+            border-radius: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-family: monospace;
+            margin-top: 6px;
+            border: 1px solid #1e293b;
+            font-size: 13px;
+            color: #cbd5e1;
+        }
+
+        .admin-tools {
+            position: absolute;
+            top: 12px;
+            left: 12px;
+            display: flex;
+            gap: 6px;
+            z-index: 10;
+        }
+
+        .tool-btn {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 13px;
+            cursor: pointer;
+            background: rgba(0, 0, 0, 0.7);
+        }
+
         .modal {
             position: fixed;
             top: 0;
@@ -315,62 +331,9 @@
             overflow-y: auto;
         }
 
-        /* Copy Boxes */
-        .copy-box {
-            background: #000;
-            padding: 12px 15px;
-            border-radius: 12px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-family: monospace;
-            margin-top: 6px;
-            border: 1px solid #1e293b;
-            font-size: 13px;
-            color: #cbd5e1;
-        }
-
-        .copy-box i {
-            color: var(--accent);
-            cursor: pointer;
-        }
-
-        .admin-tools {
-            position: absolute;
-            top: 12px;
-            left: 12px;
-            display: flex;
-            gap: 6px;
-            z-index: 10;
-        }
-
-        .tool-btn {
-            width: 32px;
-            height: 32px;
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 13px;
-            cursor: pointer;
-            background: rgba(0, 0, 0, 0.7);
-        }
-
-        .edit {
-            color: #38bdf8;
-        }
-
-        .del {
-            color: #fb7185;
-        }
-
         @media (max-width: 768px) {
             :root {
                 --sidebar-w: 100%;
-            }
-
-            .grid {
-                grid-template-columns: 1fr;
             }
         }
     </style>
@@ -378,7 +341,7 @@
 
 <body>
 
-    <div id="toast"><i class="fas fa-info-circle"></i> <span id="toast-msg">تم النسخ</span></div>
+    <div id="toast"><i class="fas fa-check-circle"></i> <span id="toast-msg">تم النسخ</span></div>
 
     <div id="article-modal" class="modal" onclick="closeModal()">
         <div class="modal-content" onclick="event.stopPropagation()">
@@ -394,63 +357,56 @@
             <button class="b-btn a" id="brand-advaz" onclick="changeBrand('advaz')">أدفاز</button>
         </div>
         <button onclick="toggleSidebar()"
-            style="background:none; border:1px solid var(--accent); color:var(--accent); padding:10px 22px; border-radius:50px; cursor:pointer; font-weight:700">لوحة
-            التحكم</button>
+            style="background:none; border:1px solid var(--accent); color:var(--accent); padding:10px 22px; border-radius:50px; cursor:pointer; font-weight:700">التحكم</button>
     </nav>
 
     <div class="container">
-        <h2 class="section-header"><i class="fas fa-link"></i> روابط سريعة</h2>
+        <h2 class="section-header"><i class="fas fa-link"></i> الروابط</h2>
         <div class="links-grid" id="links-container"></div>
 
-        <h2 class="section-header"><i class="fas fa-video"></i> المقالات والمعرض</h2>
+        <h2 class="section-header"><i class="fas fa-play-circle"></i> المحتوى المرئي والمقالات</h2>
         <div class="grid" id="articles-container"></div>
 
-        <h2 class="section-header"><i class="fas fa-database"></i> بوابة الموردين</h2>
+        <h2 class="section-header"><i class="fas fa-users-cog"></i> بيانات الموردين</h2>
         <div class="grid" id="suppliers-container"></div>
     </div>
 
     <div id="admin-sidebar">
         <div class="sidebar-header">
-            <h2 style="margin:0">إدارة المحتوى</h2>
-            <i class="fas fa-times" onclick="toggleSidebar()" style="cursor:pointer"></i>
+            <h2 style="margin:0">Dashboard</h2><i class="fas fa-times" onclick="toggleSidebar()"
+                style="cursor:pointer"></i>
         </div>
 
         <div id="login-section">
-            <input type="text" id="adm-user" class="form-input" placeholder="اسم المستخدم">
-            <input type="password" id="adm-pass" class="form-input" placeholder="كلمة المرور">
+            <input type="text" id="adm-user" class="form-input" placeholder="User">
+            <input type="password" id="adm-pass" class="form-input" placeholder="Password">
             <button class="btn-save" onclick="handleLogin()">دخول</button>
         </div>
 
         <div id="cms-section" style="display:none">
-            <p style="color:var(--accent); font-size:12px; margin-bottom:20px">القسم النشط: <b
-                    id="active-label">مُثري</b></p>
-
             <div class="acc-group">
                 <button class="acc-head" onclick="toggleAcc('acc-links')">الروابط <i class="fas fa-plus"></i></button>
                 <div class="acc-body" id="acc-links">
                     <input type="hidden" id="f-l-id">
                     <input type="text" id="f-l-title" class="form-input" placeholder="العنوان">
                     <input type="text" id="f-l-url" class="form-input" placeholder="الرابط">
-                    <input type="text" id="f-l-icon" class="form-input" placeholder="رابط الأيقونة">
+                    <input type="text" id="f-l-icon" class="form-input" placeholder="الأيقونة">
                     <input type="number" id="f-l-order" class="form-input" placeholder="الترتيب">
                     <button class="btn-save" onclick="processSave('links')">حفظ</button>
                 </div>
             </div>
-
             <div class="acc-group">
-                <button class="acc-head" onclick="toggleAcc('acc-arts')">المقالات (فيديو/صور) <i
+                <button class="acc-head" onclick="toggleAcc('acc-arts')">المقالات والفيديو <i
                         class="fas fa-plus"></i></button>
                 <div class="acc-body" id="acc-arts">
                     <input type="hidden" id="f-a-id">
                     <input type="text" id="f-a-title" class="form-input" placeholder="العنوان">
-                    <input type="text" id="f-a-img" class="form-input"
-                        placeholder="رابط: صورة / YouTube / Direct Video">
-                    <textarea id="f-a-desc" class="form-input" style="height:100px" placeholder="النص..."></textarea>
+                    <input type="text" id="f-a-img" class="form-input" placeholder="رابط الميديا">
+                    <textarea id="f-a-desc" class="form-input" style="height:100px" placeholder="الوصف"></textarea>
                     <input type="number" id="f-a-order" class="form-input" placeholder="الترتيب">
                     <button class="btn-save" onclick="processSave('articles')">حفظ</button>
                 </div>
             </div>
-
             <div class="acc-group">
                 <button class="acc-head" onclick="toggleAcc('acc-sups')">الموردين <i class="fas fa-plus"></i></button>
                 <div class="acc-body" id="acc-sups">
@@ -459,7 +415,7 @@
                     <input type="text" id="f-s-img" class="form-input" placeholder="اللوجو">
                     <input type="text" id="f-s-cid" class="form-input" placeholder="Client ID">
                     <input type="text" id="f-s-sec" class="form-input" placeholder="Secret Key">
-                    <textarea id="f-s-note" class="form-input" placeholder="ملاحظات"></textarea>
+                    <textarea id="f-s-note" class="form-input" placeholder="الملاحظات"></textarea>
                     <input type="number" id="f-s-order" class="form-input" placeholder="الترتيب">
                     <button class="btn-save" onclick="processSave('suppliers')">حفظ</button>
                 </div>
@@ -487,53 +443,29 @@
 
         let currentBrand = 'muthri', isLogged = false;
 
-        // --- Toast System ---
         function showToast(msg) {
             const t = document.getElementById('toast');
             document.getElementById('toast-msg').innerText = msg;
-            t.classList.add('show');
-            setTimeout(() => t.classList.remove('show'), 3000);
+            t.classList.add('show'); setTimeout(() => t.classList.remove('show'), 3000);
         }
 
-        // --- Media Intelligent Resolver ---
         function renderMedia(url) {
             if (!url) return '<div class="media-wrap"></div>';
-
-            // 1. YouTube Check
             if (url.includes('youtube.com') || url.includes('youtu.be')) {
-                let vidId = url.split('v=')[1] || url.split('/').pop();
-                if (vidId.includes('&')) vidId = vidId.split('&')[0];
-                return `<iframe src="https://www.youtube.com/embed/${vidId}" allowfullscreen></iframe>`;
+                let id = url.split('v=')[1] || url.split('/').pop();
+                return `<iframe src="https://www.youtube.com/embed/${id.split('&')[0]}" allowfullscreen></iframe>`;
             }
-
-            // 2. Google Drive Check
-            if (url.includes('drive.google.com')) {
-                let fileId = url.split('/d/')[1]?.split('/')[0];
-                return `<iframe src="https://www.google.com/get_video_info?docid=${fileId}" allowfullscreen></iframe>`;
-                // ملاحظة: روابط درايف يفضل أن تكون Embed أو يتم تحويلها لـ Direct Link
+            if (url.includes('catbox.moe') || url.match(/\.(mp4|webm|mov)$/)) {
+                return `<video controls preload="metadata" playsinline><source src="${url}" type="video/mp4"></video>`;
             }
-
-            // 3. Direct Video Check (mp4, webm, etc.)
-            const videoExts = ['mp4', 'webm', 'ogg', 'mov'];
-            const isVideo = videoExts.some(ext => url.toLowerCase().endsWith(ext)) || url.includes('catbox.moe');
-
-            if (isVideo) {
-                return `<video controls preload="metadata" playsinline>
-                        <source src="${url}" type="video/mp4">
-                        متصفحك لا يدعم تشغيل الفيديو.
-                    </video>`;
-            }
-
-            // 4. Default to Image
-            return `<img src="${url}" alt="media" loading="lazy" onerror="this.src='https://via.placeholder.com/400x200?text=Invalid+Media+Link'">`;
+            return `<img src="${url}" loading="lazy" onerror="this.src='https://via.placeholder.com/400x200'">`;
         }
 
         function changeBrand(b) {
             currentBrand = b;
             document.querySelectorAll('.b-btn').forEach(btn => btn.classList.remove('active'));
-            document.getElementById(`brand-${b}`).classList.add('active', b === 'muthri' ? 'm' : 'a');
+            document.getElementById(`brand-${b}`).classList.add('active');
             document.documentElement.style.setProperty('--accent', b === 'muthri' ? '#00ffa3' : '#bd00ff');
-            document.getElementById('active-label').innerText = b === 'muthri' ? 'مُثري' : 'أدفاز';
             refreshUI();
         }
 
@@ -556,9 +488,8 @@
                 return `<div class="card">
                 ${isLogged ? drawTools('articles', doc) : ''}
                 <div class="media-wrap">${renderMedia(d.img)}</div>
-                <h3 style="margin:0 0 10px">${d.title}</h3>
-                <p class="art-desc">${d.desc}</p>
-                <button onclick="viewFull('${d.title}', '${d.img}', '${encodeURIComponent(d.desc)}')" style="background:none; border:none; color:var(--accent); cursor:pointer; font-weight:700; margin-top:10px">قراءة المزيد</button>
+                <h3>${d.title}</h3>
+                <button onclick="viewFull('${d.title}', '${d.img}', '${encodeURIComponent(d.desc)}')" style="background:none; border:none; color:var(--accent); cursor:pointer; font-weight:700">التفاصيل</button>
             </div>`;
             }).join('');
 
@@ -574,20 +505,18 @@
                 <div style="font-size:10px; color:var(--dim)">CLIENT ID</div>
                 <div class="copy-box"><span>${d.cid}</span><i class="far fa-copy" onclick="copyText('${d.cid}')"></i></div>
                 <div style="font-size:10px; color:var(--dim); margin-top:10px">SECRET KEY</div>
-                <div class="copy-box"><span>${d.sec || '••••••••'}</span><i class="far fa-copy" onclick="copyText('${d.sec}')"></i></div>
+                <div class="copy-box"><span>${d.sec || '---'}</span><i class="far fa-copy" onclick="copyText('${d.sec}')"></i></div>
+                ${d.note ? `<div style="margin-top:15px; padding:12px; background:rgba(255,255,255,0.02); border-right:3px solid var(--accent); font-size:13px; color:var(--dim); border-radius:8px">${d.note}</div>` : ''}
             </div>`;
             }).join('');
         }
 
         async function processSave(coll) {
             let p = { type: currentBrand, order: 0 }, id = document.getElementById(coll === 'links' ? 'f-l-id' : coll === 'articles' ? 'f-a-id' : 'f-s-id').value;
-            if (coll === 'links') {
-                p = { title: document.getElementById('f-l-title').value, url: document.getElementById('f-l-url').value, icon: document.getElementById('f-l-icon').value, order: Number(document.getElementById('f-l-order').value) };
-            } else if (coll === 'articles') {
-                p = { ...p, title: document.getElementById('f-a-title').value, img: document.getElementById('f-a-img').value, desc: document.getElementById('f-a-desc').value, order: Number(document.getElementById('f-a-order').value) };
-            } else {
-                p = { ...p, name: document.getElementById('f-s-name').value, image: document.getElementById('f-s-img').value, cid: document.getElementById('f-s-cid').value, sec: document.getElementById('f-s-sec').value, note: document.getElementById('f-s-note').value, order: Number(document.getElementById('f-s-order').value) };
-            }
+            if (coll === 'links') p = { title: document.getElementById('f-l-title').value, url: document.getElementById('f-l-url').value, icon: document.getElementById('f-l-icon').value, order: Number(document.getElementById('f-l-order').value) };
+            else if (coll === 'articles') p = { ...p, title: document.getElementById('f-a-title').value, img: document.getElementById('f-a-img').value, desc: document.getElementById('f-a-desc').value, order: Number(document.getElementById('f-a-order').value) };
+            else p = { ...p, name: document.getElementById('f-s-name').value, image: document.getElementById('f-s-img').value, cid: document.getElementById('f-s-cid').value, sec: document.getElementById('f-s-sec').value, note: document.getElementById('f-s-note').value, order: Number(document.getElementById('f-s-order').value) };
+
             id ? await db.collection(coll).doc(id).update(p) : await db.collection(coll).add(p);
             showToast("تم الحفظ"); clearInputs(); refreshUI(); toggleSidebar();
         }
@@ -618,29 +547,14 @@
         }
 
         async function delItem(coll, id) { if (confirm("حذف؟")) { await db.collection(coll).doc(id).delete(); showToast("تم الحذف"); refreshUI(); } }
-
-        function handleLogin() {
-            if (document.getElementById('adm-user').value === 'prog-admin' && document.getElementById('adm-pass').value === 'admin') {
-                isLogged = true; document.getElementById('login-section').style.display = 'none'; document.getElementById('cms-section').style.display = 'block'; refreshUI();
-            } else showToast("خطأ في البيانات");
-        }
-
-        function viewFull(t, m, d) {
-            document.getElementById('modal-data').innerHTML = `<div class="media-wrap" style="height:350px">${renderMedia(m)}</div><h2 style="margin:20px 0 15px">${t}</h2><p style="line-height:1.8; color:var(--dim)">${decodeURIComponent(d)}</p>`;
-            document.getElementById('article-modal').style.display = 'flex';
-        }
-
+        function handleLogin() { if (document.getElementById('adm-user').value === 'prog-admin' && document.getElementById('adm-pass').value === 'admin') { isLogged = true; document.getElementById('login-section').style.display = 'none'; document.getElementById('cms-section').style.display = 'block'; refreshUI(); } else showToast("خطأ"); }
+        function viewFull(t, m, d) { document.getElementById('modal-data').innerHTML = `<div class="media-wrap" style="height:350px">${renderMedia(m)}</div><h2 style="margin:20px 0 15px">${t}</h2><p style="line-height:1.8; color:var(--dim)">${decodeURIComponent(d)}</p>`; document.getElementById('article-modal').style.display = 'flex'; }
         function toggleSidebar() { document.getElementById('admin-sidebar').classList.toggle('open'); }
-        function toggleAcc(id, force) {
-            const el = document.getElementById(id);
-            document.querySelectorAll('.acc-body').forEach(b => b.style.display = 'none');
-            el.style.display = force || el.style.display === 'none' ? 'block' : 'none';
-        }
+        function toggleAcc(id, force) { const el = document.getElementById(id); document.querySelectorAll('.acc-body').forEach(b => b.style.display = 'none'); el.style.display = force || el.style.display === 'none' ? 'block' : 'none'; }
         function closeModal() { document.getElementById('article-modal').style.display = 'none'; }
         function copyText(v) { navigator.clipboard.writeText(v); showToast("تم النسخ"); }
         function handleLogout() { location.reload(); }
         function clearInputs() { document.querySelectorAll('.form-input').forEach(i => i.value = ""); document.querySelectorAll('input[type="hidden"]').forEach(i => i.value = ""); }
-
         window.onload = () => changeBrand('muthri');
     </script>
 </body>
