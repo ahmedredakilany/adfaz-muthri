@@ -4,10 +4,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>مركز المحتوى | Muthri & Advaz</title>
+    <title>أرشيف المقالات | Muthri & Advaz</title>
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
     <style>
         :root {
             --bg: #030508;
@@ -17,12 +16,7 @@
             --accent: #00ffa3;
             --text: #f1f5f9;
             --dim: #64748b;
-            --transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
-        }
-
-        * {
-            box-sizing: border-box;
-            outline: none;
+            --transition: all 0.3s ease;
         }
 
         body {
@@ -30,78 +24,52 @@
             color: var(--text);
             font-family: 'Tajawal', sans-serif;
             margin: 0;
-            min-height: 100vh;
-            overflow-x: hidden;
         }
 
+        /* Header */
         header {
-            background: rgba(12, 18, 30, 0.85);
-            backdrop-filter: blur(15px);
-            padding: 20px 5%;
+            background: rgba(12, 18, 30, 0.9);
+            backdrop-filter: blur(10px);
+            padding: 15px 5%;
             position: sticky;
             top: 0;
             z-index: 1000;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
             display: flex;
             justify-content: space-between;
             align-items: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
         }
 
-        .back-btn {
-            text-decoration: none;
+        .back-link {
             color: var(--text);
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-weight: 700;
-            transition: var(--transition);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            padding: 8px 15px;
-            border-radius: 50px;
+            text-decoration: none;
+            font-weight: bold;
             font-size: 14px;
         }
 
-        .back-btn:hover {
-            border-color: var(--muthri);
-            color: var(--muthri);
+        .back-link:hover {
+            color: var(--accent);
         }
 
+        /* Controls */
         .controls {
             max-width: 1200px;
-            margin: 40px auto 20px;
+            margin: 30px auto;
             padding: 0 20px;
             display: flex;
-            flex-wrap: wrap;
-            gap: 20px;
-            justify-content: space-between;
-            align-items: center;
+            gap: 15px;
         }
 
-        .search-box {
-            position: relative;
+        .search-input {
             flex: 1;
-            min-width: 300px;
-        }
-
-        .search-box input {
-            width: 100%;
             background: var(--card);
             border: 1px solid #1e293b;
-            padding: 15px 45px 15px 15px;
-            border-radius: 15px;
+            padding: 12px;
+            border-radius: 10px;
             color: #fff;
-            font-family: inherit;
-            transition: var(--transition);
         }
 
-        .search-box i {
-            position: absolute;
-            right: 15px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: var(--dim);
-        }
-
+        /* Grid & Cards */
         .container {
             max-width: 1200px;
             margin: 0 auto 50px;
@@ -110,234 +78,152 @@
 
         .grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-            gap: 30px;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 25px;
         }
 
         .card {
             background: var(--card);
-            border-radius: 24px;
+            border-radius: 20px;
             overflow: hidden;
-            border: 1px solid rgba(255, 255, 255, 0.03);
-            transition: var(--transition);
-            display: flex;
-            flex-direction: column;
             position: relative;
+            transition: 0.3s;
+            border: 1px solid rgba(255, 255, 255, 0.05);
         }
 
         .card:hover {
-            transform: translateY(-10px);
+            transform: translateY(-5px);
             border-color: var(--accent);
         }
 
-        /* Admin Tools Styles */
-        .admin-tools {
-            position: absolute;
-            top: 15px;
-            left: 15px;
-            display: none;
-            /* تظهر فقط للأدمن */
-            gap: 8px;
-            z-index: 20;
-        }
-
-        .tool-btn {
-            width: 35px;
-            height: 35px;
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            background: rgba(0, 0, 0, 0.8);
-            color: #fff;
-            transition: 0.3s;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .tool-btn.edit:hover {
-            background: var(--muthri);
-            color: #000;
-        }
-
-        .tool-btn.del:hover {
-            background: #ff4d4d;
-            color: #fff;
-        }
-
-        /* Show if logged in */
-        body.is-admin .admin-tools {
-            display: flex;
-        }
-
-        .media-wrap {
+        .media-box {
+            height: 200px;
             width: 100%;
-            height: 220px;
             background: #000;
-            position: relative;
         }
 
-        .media-wrap img,
-        .media-wrap video,
-        .media-wrap iframe {
+        .media-box img,
+        .media-box video,
+        .media-box iframe {
             width: 100%;
             height: 100%;
             object-fit: cover;
             border: none;
         }
 
-        .card-content {
-            padding: 25px;
-            flex-grow: 1;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .card-content h3 {
-            margin: 0 0 15px;
-            font-size: 1.25rem;
-            line-height: 1.5;
-            font-weight: 700;
+        .card-body {
+            padding: 20px;
         }
 
         .badge {
+            font-size: 10px;
+            padding: 4px 10px;
+            border-radius: 5px;
+            margin-bottom: 10px;
             display: inline-block;
-            padding: 5px 15px;
-            border-radius: 50px;
-            font-size: 11px;
-            font-weight: 700;
-            margin-bottom: 12px;
-            width: fit-content;
         }
 
-        .badge-muthri {
+        .muthri-bg {
             background: rgba(0, 255, 163, 0.1);
             color: var(--muthri);
         }
 
-        .badge-advaz {
+        .advaz-bg {
             background: rgba(189, 0, 255, 0.1);
             color: var(--advaz);
         }
 
-        .btn-read {
-            margin-top: auto;
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            color: var(--text);
-            padding: 12px;
-            border-radius: 12px;
-            cursor: pointer;
-            transition: var(--transition);
-            font-weight: 700;
-            font-family: inherit;
+        /* Admin Tools */
+        .admin-controls {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            display: none;
+            gap: 5px;
         }
 
-        .btn-read:hover {
-            background: var(--accent);
+        body.is-admin .admin-controls {
+            display: flex;
+        }
+
+        .btn-tool {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            border: none;
+        }
+
+        .btn-tool.edit:hover {
+            background: var(--muthri);
             color: #000;
         }
 
+        .btn-tool.del:hover {
+            background: #ff4757;
+        }
+
+        /* Modal */
         .modal {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.95);
-            z-index: 3000;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.9);
             display: none;
             justify-content: center;
             align-items: center;
+            z-index: 2000;
             padding: 20px;
         }
 
         .modal-content {
             background: var(--card);
-            max-width: 800px;
+            padding: 30px;
+            border-radius: 20px;
+            max-width: 700px;
             width: 100%;
-            border-radius: 30px;
-            padding: 40px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            position: relative;
-            max-height: 90vh;
+            max-height: 80vh;
             overflow-y: auto;
         }
 
-        #modal-desc {
+        #desc-content {
             white-space: pre-wrap;
-            line-height: 1.8;
-            color: #cbd5e1;
-            font-size: 1.1rem;
-        }
-
-        #toast {
-            position: fixed;
-            bottom: 25px;
-            left: 50%;
-            transform: translateX(-50%) translateY(100px);
-            background: var(--muthri);
-            color: #000;
-            padding: 12px 25px;
-            border-radius: 50px;
-            font-weight: 700;
-            z-index: 9999;
-            transition: 0.4s;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        #toast.show {
-            transform: translateX(-50%) translateY(0);
-        }
-
-        @media (max-width: 600px) {
-            .controls {
-                flex-direction: column;
-                align-items: stretch;
-            }
-
-            .modal-content {
-                padding: 20px;
-            }
+            line-height: 1.7;
+            color: #ccc;
         }
     </style>
 </head>
 
-<body>
-
-    <div id="toast"><i class="fas fa-info-circle"></i> <span id="toast-msg"></span></div>
+<body id="mainBody">
 
     <header>
-        <a href="index.html" class="back-btn"><i class="fas fa-arrow-right"></i> الرئيسية</a>
-        <h2 style="margin:0; font-size: 1.2rem;">الأرشيف الكامل</h2>
+        <a href="index.html" class="back-link"><i class="fas fa-chevron-right"></i> العودة للرئيسية</a>
+        <h3 style="margin:0">كل المقالات</h3>
     </header>
 
     <div class="controls">
-        <div class="search-box">
-            <i class="fas fa-search"></i>
-            <input type="text" id="searchInput" placeholder="بحث في العناوين..." onkeyup="filterArticles()">
-        </div>
-        <div>
-            <select id="brandFilter" onchange="filterArticles()"
-                style="background: var(--card); color: #fff; padding: 12px 20px; border-radius: 12px; border: 1px solid #1e293b; cursor: pointer; font-family: inherit;">
-                <option value="all">كل التصنيفات</option>
-                <option value="muthri">مُثري</option>
-                <option value="advaz">أدفاز</option>
-            </select>
-        </div>
+        <input type="text" class="search-input" id="search" placeholder="ابحث بالعنوان..." onkeyup="filter()">
+        <select id="filterType" onchange="filter()"
+            style="background:var(--card); color:white; border-radius:10px; padding:0 10px;">
+            <option value="all">الكل</option>
+            <option value="muthri">مُثري</option>
+            <option value="advaz">أدفاز</option>
+        </select>
     </div>
 
     <div class="container">
-        <div class="grid" id="all-articles-container"></div>
+        <div class="grid" id="container"></div>
     </div>
 
-    <div id="article-modal" class="modal" onclick="closeModal()">
+    <div class="modal" id="modal" onclick="this.style.display='none'">
         <div class="modal-content" onclick="event.stopPropagation()">
-            <i class="fas fa-times" onclick="closeModal()"
-                style="position:absolute; top:25px; left:25px; cursor:pointer; font-size:22px; color: var(--dim)"></i>
-            <div id="modal-body"></div>
+            <div id="modal-media" style="margin-bottom:20px"></div>
+            <h2 id="modal-title"></h2>
+            <div id="desc-content"></div>
         </div>
     </div>
 
@@ -356,104 +242,77 @@
         firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
 
-        let allArticles = [];
-
-        // التحقق من حالة الأدمن من المتصفح
+        let articles = [];
         const isAdmin = localStorage.getItem('isAdmin') === 'true';
-        if (isAdmin) document.body.classList.add('is-admin');
+        if (isAdmin) document.getElementById('mainBody').classList.add('is-admin');
 
-        async function loadAllArticles() {
-            try {
-                const snapshot = await db.collection('articles').orderBy('order', 'asc').get();
-                allArticles = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-                renderArticles(allArticles);
-            } catch (err) {
-                console.error("Error loading articles:", err);
-            }
+        async function fetchArticles() {
+            const snap = await db.collection('articles').orderBy('order', 'asc').get();
+            articles = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+            render(articles);
         }
 
         function renderMedia(url) {
-            if (!url) return '<div class="media-wrap"></div>';
-            if (url.includes('youtube.com') || url.includes('youtu.be')) {
+            if (!url) return '';
+            if (url.includes('youtube') || url.includes('youtu.be')) {
                 let id = url.split('v=')[1] || url.split('/').pop();
-                return `<iframe src="https://www.youtube.com/embed/${id.split('&')[0]}" allowfullscreen></iframe>`;
+                return `<iframe src="https://www.youtube.com/embed/${id}"></iframe>`;
             }
-            if (url.includes('catbox.moe') || url.match(/\.(mp4|webm|mov)$/)) {
-                return `<video controls preload="metadata"><source src="${url}" type="video/mp4"></video>`;
-            }
-            return `<img src="${url}" loading="lazy" onerror="this.src='https://via.placeholder.com/400x250'">`;
+            return `<img src="${url}" loading="lazy">`;
         }
 
-        function renderArticles(data) {
-            const container = document.getElementById('all-articles-container');
-            if (data.length === 0) {
-                container.innerHTML = `<div style="grid-column: 1/-1; text-align: center; padding: 50px; color: var(--dim);">لا توجد نتائج بحث</div>`;
-                return;
-            }
-
+        function render(data) {
+            const container = document.getElementById('container');
             container.innerHTML = data.map(art => {
-                const s = encodeURIComponent(JSON.stringify({ id: art.id, data: art }));
+                const dataStr = encodeURIComponent(JSON.stringify({ id: art.id, data: art }));
                 return `
                 <div class="card">
-                    <div class="admin-tools">
-                        <div class="tool-btn edit" title="تعديل" onclick="editFromAll('${s}')"><i class="fas fa-edit"></i></div>
-                        <div class="tool-btn del" title="حذف" onclick="deleteFromAll('${art.id}')"><i class="fas fa-trash"></i></div>
+                    <div class="admin-controls">
+                        <button class="btn-tool edit" onclick="goToEdit('${dataStr}')"><i class="fas fa-edit"></i></button>
+                        <button class="btn-tool del" onclick="deleteArt('${art.id}')"><i class="fas fa-trash"></i></button>
                     </div>
-                    <div class="media-wrap">${renderMedia(art.img)}</div>
-                    <div class="card-content">
-                        <span class="badge ${art.type === 'muthri' ? 'badge-muthri' : 'badge-advaz'}">
-                            ${art.type === 'muthri' ? 'مُثري' : 'أدفاز'}
-                        </span>
-                        <h3>${art.title}</h3>
-                        <button class="btn-read" onclick="viewFull('${art.title}', '${art.img}', '${encodeURIComponent(art.desc)}')">إقرأ المزيد</button>
+                    <div class="media-box">${renderMedia(art.img)}</div>
+                    <div class="card-body">
+                        <span class="badge ${art.type === 'muthri' ? 'muthri-bg' : 'advaz-bg'}">${art.type}</span>
+                        <h4>${art.title}</h4>
+                        <button onclick="showFull('${art.title}', '${art.img}', '${encodeURIComponent(art.desc)}')" style="width:100%; background:transparent; border:1px solid #333; color:white; padding:8px; border-radius:8px; cursor:pointer;">تفاصيل</button>
                     </div>
                 </div>`;
             }).join('');
         }
 
-        function filterArticles() {
-            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
-            const brandTerm = document.getElementById('brandFilter').value;
-            const filtered = allArticles.filter(art => {
-                const matchesSearch = art.title.toLowerCase().includes(searchTerm);
-                const matchesBrand = brandTerm === 'all' || art.type === brandTerm;
-                return matchesSearch && matchesBrand;
-            });
-            renderArticles(filtered);
+        function filter() {
+            const q = document.getElementById('search').value.toLowerCase();
+            const t = document.getElementById('filterType').value;
+            const filtered = articles.filter(a =>
+                a.title.toLowerCase().includes(q) && (t === 'all' || a.type === t)
+            );
+            render(filtered);
         }
 
-        // وظائف الإدارة
-        async function deleteFromAll(id) {
-            if (confirm("هل تريد حذف هذا المقال نهائياً؟")) {
+        function showFull(t, m, d) {
+            document.getElementById('modal-title').innerText = t;
+            document.getElementById('modal-media').innerHTML = renderMedia(m);
+            document.getElementById('desc-content').innerText = decodeURIComponent(d);
+            document.getElementById('modal').style.display = 'flex';
+        }
+
+        // الوظيفة الأساسية لإرسال التعديل
+        function goToEdit(dataStr) {
+            // نؤكد على حفظ حالة الأدمن قبل الانتقال
+            localStorage.setItem('isAdmin', 'true');
+            localStorage.setItem('editTarget', dataStr);
+            window.location.href = 'index.html?action=edit';
+        }
+
+        async function deleteArt(id) {
+            if (confirm('حذف نهائي؟')) {
                 await db.collection('articles').doc(id).delete();
-                showToast("تم الحذف بنجاح");
-                loadAllArticles();
+                fetchArticles();
             }
         }
 
-        function editFromAll(dataStr) {
-            localStorage.setItem('editTarget', dataStr);
-            location.href = 'index.html?action=edit';
-        }
-
-        function showToast(msg) {
-            const t = document.getElementById('toast');
-            document.getElementById('toast-msg').innerText = msg;
-            t.classList.add('show'); setTimeout(() => t.classList.remove('show'), 3000);
-        }
-
-        function viewFull(t, m, d) {
-            document.getElementById('modal-body').innerHTML = `
-                <div class="media-wrap" style="height:350px; border-radius: 20px; margin-bottom: 25px;">${renderMedia(m)}</div>
-                <h2 style="margin-bottom:20px;">${t}</h2>
-                <div id="modal-desc">${decodeURIComponent(d)}</div>
-            `;
-            document.getElementById('article-modal').style.display = 'flex';
-        }
-
-        function closeModal() { document.getElementById('article-modal').style.display = 'none'; }
-
-        window.onload = loadAllArticles;
+        window.onload = fetchArticles;
     </script>
 </body>
 

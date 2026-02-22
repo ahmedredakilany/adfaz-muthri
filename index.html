@@ -478,7 +478,9 @@
         firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
 
-        let currentBrand = 'muthri', isLogged = false;
+        // تحديث حالة تسجيل الدخول من التخزين المحلي فوراً
+        let currentBrand = 'muthri';
+        let isLogged = localStorage.getItem('isAdmin') === 'true';
 
         function showToast(msg) {
             const t = document.getElementById('toast');
@@ -501,7 +503,8 @@
         function changeBrand(b) {
             currentBrand = b;
             document.querySelectorAll('.b-btn').forEach(btn => btn.classList.remove('active'));
-            document.getElementById(`brand-${b}`).classList.add('active');
+            const targetBtn = document.getElementById(`brand-${b}`);
+            if (targetBtn) targetBtn.classList.add('active');
             document.documentElement.style.setProperty('--accent', b === 'muthri' ? '#00ffa3' : '#bd00ff');
             refreshUI();
         }
@@ -523,7 +526,8 @@
             // Articles (Limit 3)
             const arts = await getCol('articles');
             const displayArts = arts.slice(0, 3);
-            document.getElementById('btn-show-all').style.display = arts.length > 3 ? 'block' : 'none';
+            const btnShowAll = document.getElementById('btn-show-all');
+            if (btnShowAll) btnShowAll.style.display = arts.length > 3 ? 'block' : 'none';
 
             document.getElementById('articles-container').innerHTML = displayArts.map(doc => {
                 const d = doc.data();
@@ -531,7 +535,7 @@
                     ${isLogged ? drawTools('articles', doc) : ''}
                     <div class="media-wrap">${renderMedia(d.img)}</div>
                     <h3>${d.title}</h3>
-                    <button onclick="viewFull('${d.title}', '${d.img}', '${encodeURIComponent(d.desc)}')" style="background:none; border:none; color:var(--accent); cursor:pointer; font-weight:700">التفاصيل</button>
+                    <button onclick="viewFull('${d.title}', '${d.img}', '${encodeURIComponent(d.desc)}')" style="background:none; border:none; color:var(--accent); cursor:pointer; font-weight:700; font-family:inherit;">التفاصيل</button>
                 </div>`;
             }).join('');
 
@@ -567,7 +571,9 @@
         function editItem(coll, dataStr) {
             const d = JSON.parse(decodeURIComponent(dataStr));
             toggleAcc(coll === 'links' ? 'acc-links' : coll === 'articles' ? 'acc-arts' : 'acc-sups', true);
-            if (!document.getElementById('admin-sidebar').classList.contains('open')) toggleSidebar();
+
+            const sidebar = document.getElementById('admin-sidebar');
+            if (sidebar && !sidebar.classList.contains('open')) toggleSidebar();
 
             if (coll === 'links') {
                 document.getElementById('f-l-id').value = d.id; document.getElementById('f-l-title').value = d.data.title;
@@ -593,47 +599,84 @@
         async function delItem(coll, id) { if (confirm("حذف؟")) { await db.collection(coll).doc(id).delete(); showToast("تم الحذف"); refreshUI(); } }
 
         function handleLogin() {
-            if (document.getElementById('adm-user').value === 'prog-admin' && document.getElementById('adm-pass').value === 'admin') {
-                isLogged = true; document.getElementById('login-section').style.display = 'none'; document.getElementById('cms-section').style.display = 'block'; refreshUI();
-            } else showToast("خطأ");
+            const user = document.getElementById('adm-user').value;
+            const pass = document.getElementById('adm-pass').value;
+
+            if (user === 'prog-admin' && pass === 'admin') {
+                isLogged = true;
+                localStorage.setItem('isAdmin', 'true'); // حفظ الحالة
+                document.getElementById('login-section').style.display = 'none';
+                document.getElementById('cms-section').style.display = 'block';
+                refreshUI();
+                showToast("تم تسجيل الدخول");
+            } else {
+                showToast("خطأ في البيانات");
+            }
+        }
+
+        function handleLogout() {
+            localStorage.removeItem('isAdmin');
+            location.reload();
         }
 
         function viewFull(t, m, d) {
             document.getElementById('modal-data').innerHTML = `
                 <div class="media-wrap" style="height:350px">${renderMedia(m)}</div>
                 <h2 style="margin:20px 0 15px">${t}</h2>
-                <div id="modal-desc">${decodeURIComponent(d)}</div>`;
+                <div id="modal-desc" style="white-space: pre-wrap; line-height: 1.8;">${decodeURIComponent(d)}</div>`;
             document.getElementById('article-modal').style.display = 'flex';
         }
 
         function toggleSidebar() {
             const side = document.getElementById('admin-sidebar');
             const over = document.getElementById('overlay');
-            side.classList.toggle('open');
-            over.style.display = side.classList.contains('open') ? 'block' : 'none';
+            if (side && over) {
+                side.classList.toggle('open');
+                over.style.display = side.classList.contains('open') ? 'block' : 'none';
+            }
         }
 
         function toggleAcc(id, forceOpen = false) {
             const el = document.getElementById(id);
+            if (!el) return;
             const isVisible = el.style.display === 'block';
-
-            // Close all first
             document.querySelectorAll('.acc-body').forEach(b => b.style.display = 'none');
-
-            // Toggle or force
             if (forceOpen) el.style.display = 'block';
             else el.style.display = isVisible ? 'none' : 'block';
         }
 
         function closeModal() { document.getElementById('article-modal').style.display = 'none'; }
         function copyText(v) { navigator.clipboard.writeText(v); showToast("تم النسخ"); }
-        function handleLogout() { location.reload(); }
-        function clearInputs() { document.querySelectorAll('.form-input').forEach(i => i.value = ""); document.querySelectorAll('input[type="hidden"]').forEach(i => i.value = ""); }
-        window.onload = () => changeBrand('muthri');
+        function clearInputs() {
+            document.querySelectorAll('.form-input').forEach(i => i.value = "");
+            document.querySelectorAll('input[type="hidden"]').forEach(i => i.value = "");
+        }
 
+        // الوظيفة الأساسية عند تحميل الصفحة
+        window.onload = () => {
+            // 1. استعادة واجهة الإدارة إذا كان مسجلاً
+            if (isLogged) {
+                const loginSec = document.getElementById('login-section');
+                const cmsSec = document.getElementById('cms-section');
+                if (loginSec) loginSec.style.display = 'none';
+                if (cmsSec) cmsSec.style.display = 'block';
+            }
 
-        // داخل وظيفة handleLogin
-        localStorage.setItem('isAdmin', 'true');
+            // 2. تعيين البراند
+            changeBrand('muthri');
+
+            // 3. التعامل مع طلب التعديل القادم من صفحة الأرشيف
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.get('action') === 'edit' && localStorage.getItem('editTarget')) {
+                const dataStr = localStorage.getItem('editTarget');
+                setTimeout(() => {
+                    editItem('articles', dataStr);
+                    localStorage.removeItem('editTarget'); // تنظيف
+                    // تنظيف الرابط من البارامترات لمظهر أجمل
+                    window.history.replaceState({}, document.title, window.location.pathname);
+                }, 1000);
+            }
+        };
     </script>
 </body>
 
