@@ -37,7 +37,7 @@
             scroll-behavior: smooth;
         }
 
-        /* Toast & Navbar */
+        /* Toast */
         #toast {
             position: fixed;
             bottom: 25px;
@@ -58,6 +58,19 @@
 
         #toast.show {
             transform: translateX(-50%) translateY(0);
+        }
+
+        /* Overlay for Sidebar */
+        #overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(4px);
+            display: none;
+            z-index: 1500;
         }
 
         nav {
@@ -103,7 +116,6 @@
             color: #fff;
         }
 
-        /* Layout */
         .container {
             max-width: 1200px;
             margin: 30px auto;
@@ -132,7 +144,6 @@
             gap: 15px;
         }
 
-        /* Cards & Media */
         .card {
             background: var(--card);
             border-radius: 24px;
@@ -191,7 +202,6 @@
             height: 22px;
         }
 
-        /* Sidebar Dashboard */
         #admin-sidebar {
             position: fixed;
             left: -100%;
@@ -268,7 +278,6 @@
             cursor: pointer;
         }
 
-        /* Helpers */
         .copy-box {
             background: #000;
             padding: 12px 15px;
@@ -331,6 +340,31 @@
             overflow-y: auto;
         }
 
+        /* Fix description text format */
+        #modal-desc {
+            white-space: pre-wrap;
+            line-height: 1.8;
+            color: var(--dim);
+        }
+
+        .view-all-btn {
+            display: none;
+            margin: 40px auto;
+            padding: 15px 40px;
+            background: none;
+            border: 2px solid var(--accent);
+            color: var(--accent);
+            border-radius: 50px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .view-all-btn:hover {
+            background: var(--accent);
+            color: #000;
+        }
+
         @media (max-width: 768px) {
             :root {
                 --sidebar-w: 100%;
@@ -342,6 +376,7 @@
 <body>
 
     <div id="toast"><i class="fas fa-check-circle"></i> <span id="toast-msg">تم النسخ</span></div>
+    <div id="overlay" onclick="toggleSidebar()"></div>
 
     <div id="article-modal" class="modal" onclick="closeModal()">
         <div class="modal-content" onclick="event.stopPropagation()">
@@ -366,6 +401,8 @@
 
         <h2 class="section-header"><i class="fas fa-play-circle"></i> المحتوى المرئي والمقالات</h2>
         <div class="grid" id="articles-container"></div>
+        <center><button id="btn-show-all" class="view-all-btn" onclick="location.href='all_articles.html'">عرض
+                الكل</button></center>
 
         <h2 class="section-header"><i class="fas fa-users-cog"></i> بيانات الموردين</h2>
         <div class="grid" id="suppliers-container"></div>
@@ -475,39 +512,45 @@
                 return s.docs.filter(d => n === 'links' ? true : d.data().type === currentBrand);
             };
 
+            // Links
             const links = await getCol('links');
             document.getElementById('links-container').innerHTML = links.map(doc => `
-            <div style="position:relative">
-                <a href="${doc.data().url}" target="_blank" class="link-item"><img src="${doc.data().icon}"> ${doc.data().title}</a>
-                ${isLogged ? drawTools('links', doc) : ''}
-            </div>`).join('');
+                <div style="position:relative">
+                    <a href="${doc.data().url}" target="_blank" class="link-item"><img src="${doc.data().icon}"> ${doc.data().title}</a>
+                    ${isLogged ? drawTools('links', doc) : ''}
+                </div>`).join('');
 
+            // Articles (Limit 3)
             const arts = await getCol('articles');
-            document.getElementById('articles-container').innerHTML = arts.map(doc => {
+            const displayArts = arts.slice(0, 3);
+            document.getElementById('btn-show-all').style.display = arts.length > 3 ? 'block' : 'none';
+
+            document.getElementById('articles-container').innerHTML = displayArts.map(doc => {
                 const d = doc.data();
                 return `<div class="card">
-                ${isLogged ? drawTools('articles', doc) : ''}
-                <div class="media-wrap">${renderMedia(d.img)}</div>
-                <h3>${d.title}</h3>
-                <button onclick="viewFull('${d.title}', '${d.img}', '${encodeURIComponent(d.desc)}')" style="background:none; border:none; color:var(--accent); cursor:pointer; font-weight:700">التفاصيل</button>
-            </div>`;
+                    ${isLogged ? drawTools('articles', doc) : ''}
+                    <div class="media-wrap">${renderMedia(d.img)}</div>
+                    <h3>${d.title}</h3>
+                    <button onclick="viewFull('${d.title}', '${d.img}', '${encodeURIComponent(d.desc)}')" style="background:none; border:none; color:var(--accent); cursor:pointer; font-weight:700">التفاصيل</button>
+                </div>`;
             }).join('');
 
+            // Suppliers
             const sups = await getCol('suppliers');
             document.getElementById('suppliers-container').innerHTML = sups.map(doc => {
                 const d = doc.data();
                 return `<div class="card">
-                ${isLogged ? drawTools('suppliers', doc) : ''}
-                <div style="display:flex; align-items:center; gap:12px; margin-bottom:15px">
-                    <img src="${d.image}" style="width:45px; height:45px; border-radius:10px; object-fit:cover">
-                    <h3 style="margin:0">${d.name}</h3>
-                </div>
-                <div style="font-size:10px; color:var(--dim)">CLIENT ID</div>
-                <div class="copy-box"><span>${d.cid}</span><i class="far fa-copy" onclick="copyText('${d.cid}')"></i></div>
-                <div style="font-size:10px; color:var(--dim); margin-top:10px">SECRET KEY</div>
-                <div class="copy-box"><span>${d.sec || '---'}</span><i class="far fa-copy" onclick="copyText('${d.sec}')"></i></div>
-                ${d.note ? `<div style="margin-top:15px; padding:12px; background:rgba(255,255,255,0.02); border-right:3px solid var(--accent); font-size:13px; color:var(--dim); border-radius:8px">${d.note}</div>` : ''}
-            </div>`;
+                    ${isLogged ? drawTools('suppliers', doc) : ''}
+                    <div style="display:flex; align-items:center; gap:12px; margin-bottom:15px">
+                        <img src="${d.image}" style="width:45px; height:45px; border-radius:10px; object-fit:cover">
+                        <h3 style="margin:0">${d.name}</h3>
+                    </div>
+                    <div style="font-size:10px; color:var(--dim)">CLIENT ID</div>
+                    <div class="copy-box"><span>${d.cid}</span><i class="far fa-copy" onclick="copyText('${d.cid}')"></i></div>
+                    <div style="font-size:10px; color:var(--dim); margin-top:10px">SECRET KEY</div>
+                    <div class="copy-box"><span>${d.sec || '---'}</span><i class="far fa-copy" onclick="copyText('${d.sec}')"></i></div>
+                    ${d.note ? `<div style="margin-top:15px; padding:12px; background:rgba(255,255,255,0.02); border-right:3px solid var(--accent); font-size:13px; color:var(--dim); border-radius:8px; white-space:pre-wrap;">${d.note}</div>` : ''}
+                </div>`;
             }).join('');
         }
 
@@ -524,7 +567,8 @@
         function editItem(coll, dataStr) {
             const d = JSON.parse(decodeURIComponent(dataStr));
             toggleAcc(coll === 'links' ? 'acc-links' : coll === 'articles' ? 'acc-arts' : 'acc-sups', true);
-            toggleSidebar();
+            if (!document.getElementById('admin-sidebar').classList.contains('open')) toggleSidebar();
+
             if (coll === 'links') {
                 document.getElementById('f-l-id').value = d.id; document.getElementById('f-l-title').value = d.data.title;
                 document.getElementById('f-l-url').value = d.data.url; document.getElementById('f-l-icon').value = d.data.icon; document.getElementById('f-l-order').value = d.data.order;
@@ -541,16 +585,46 @@
         function drawTools(c, doc) {
             const s = encodeURIComponent(JSON.stringify({ id: doc.id, data: doc.data() }));
             return `<div class="admin-tools">
-            <div class="tool-btn edit" onclick="editItem('${c}', '${s}')"><i class="fas fa-edit"></i></div>
-            <div class="tool-btn del" onclick="delItem('${c}', '${doc.id}')"><i class="fas fa-trash"></i></div>
-        </div>`;
+                <div class="tool-btn edit" onclick="editItem('${c}', '${s}')"><i class="fas fa-edit"></i></div>
+                <div class="tool-btn del" onclick="delItem('${c}', '${doc.id}')"><i class="fas fa-trash"></i></div>
+            </div>`;
         }
 
         async function delItem(coll, id) { if (confirm("حذف؟")) { await db.collection(coll).doc(id).delete(); showToast("تم الحذف"); refreshUI(); } }
-        function handleLogin() { if (document.getElementById('adm-user').value === 'prog-admin' && document.getElementById('adm-pass').value === 'admin') { isLogged = true; document.getElementById('login-section').style.display = 'none'; document.getElementById('cms-section').style.display = 'block'; refreshUI(); } else showToast("خطأ"); }
-        function viewFull(t, m, d) { document.getElementById('modal-data').innerHTML = `<div class="media-wrap" style="height:350px">${renderMedia(m)}</div><h2 style="margin:20px 0 15px">${t}</h2><p style="line-height:1.8; color:var(--dim)">${decodeURIComponent(d)}</p>`; document.getElementById('article-modal').style.display = 'flex'; }
-        function toggleSidebar() { document.getElementById('admin-sidebar').classList.toggle('open'); }
-        function toggleAcc(id, force) { const el = document.getElementById(id); document.querySelectorAll('.acc-body').forEach(b => b.style.display = 'none'); el.style.display = force || el.style.display === 'none' ? 'block' : 'none'; }
+
+        function handleLogin() {
+            if (document.getElementById('adm-user').value === 'prog-admin' && document.getElementById('adm-pass').value === 'admin') {
+                isLogged = true; document.getElementById('login-section').style.display = 'none'; document.getElementById('cms-section').style.display = 'block'; refreshUI();
+            } else showToast("خطأ");
+        }
+
+        function viewFull(t, m, d) {
+            document.getElementById('modal-data').innerHTML = `
+                <div class="media-wrap" style="height:350px">${renderMedia(m)}</div>
+                <h2 style="margin:20px 0 15px">${t}</h2>
+                <div id="modal-desc">${decodeURIComponent(d)}</div>`;
+            document.getElementById('article-modal').style.display = 'flex';
+        }
+
+        function toggleSidebar() {
+            const side = document.getElementById('admin-sidebar');
+            const over = document.getElementById('overlay');
+            side.classList.toggle('open');
+            over.style.display = side.classList.contains('open') ? 'block' : 'none';
+        }
+
+        function toggleAcc(id, forceOpen = false) {
+            const el = document.getElementById(id);
+            const isVisible = el.style.display === 'block';
+
+            // Close all first
+            document.querySelectorAll('.acc-body').forEach(b => b.style.display = 'none');
+
+            // Toggle or force
+            if (forceOpen) el.style.display = 'block';
+            else el.style.display = isVisible ? 'none' : 'block';
+        }
+
         function closeModal() { document.getElementById('article-modal').style.display = 'none'; }
         function copyText(v) { navigator.clipboard.writeText(v); showToast("تم النسخ"); }
         function handleLogout() { location.reload(); }

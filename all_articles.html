@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>المحتوى والمقالات | Muthri & Advaz</title>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        :root {
+            --bg: #030508;
+            --card: #0c121e;
+            --muthri: #00ffa3;
+            --advaz: #bd00ff;
+            --accent: #00ffa3;
+            --text: #f1f5f9;
+            --dim: #64748b;
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            box-sizing: border-box;
+            outline: none;
+        }
+
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: 'Tajawal', sans-serif;
+            margin: 0;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Header & Navigation */
+        header {
+            background: rgba(12, 18, 30, 0.8);
+            backdrop-filter: blur(15px);
+            padding: 20px 5%;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .back-btn {
+            text-decoration: none;
+            color: var(--text);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 700;
+            transition: var(--transition);
+        }
+
+        .back-btn:hover {
+            color: var(--accent);
+        }
+
+        /* Search & Filters */
+        .controls {
+            max-width: 1200px;
+            margin: 40px auto 20px;
+            padding: 0 20px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .search-box {
+            position: relative;
+            flex: 1;
+            min-width: 300px;
+        }
+
+        .search-box input {
+            width: 100%;
+            background: var(--card);
+            border: 1px solid #1e293b;
+            padding: 15px 45px 15px 15px;
+            border-radius: 15px;
+            color: #fff;
+            font-family: inherit;
+            transition: var(--transition);
+        }
+
+        .search-box input:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 15px rgba(0, 255, 163, 0.1);
+        }
+
+        .search-box i {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--dim);
+        }
+
+        /* Grid */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto 50px;
+            padding: 0 20px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 30px;
+        }
+
+        /* Article Card */
+        .card {
+            background: var(--card);
+            border-radius: 24px;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.03);
+            transition: var(--transition);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+            border-color: var(--accent);
+        }
+
+        .media-wrap {
+            width: 100%;
+            height: 220px;
+            background: #000;
+            position: relative;
+        }
+
+        .media-wrap img,
+        .media-wrap video,
+        .media-wrap iframe {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border: none;
+        }
+
+        .card-content {
+            padding: 20px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card-content h3 {
+            margin: 0 0 12px;
+            font-size: 1.2rem;
+            line-height: 1.4;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 50px;
+            font-size: 11px;
+            font-weight: 700;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+        }
+
+        .badge-muthri {
+            background: rgba(0, 255, 163, 0.1);
+            color: var(--muthri);
+        }
+
+        .badge-advaz {
+            background: rgba(189, 0, 255, 0.1);
+            color: var(--advaz);
+        }
+
+        .btn-read {
+            margin-top: auto;
+            background: none;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--dim);
+            padding: 10px;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: var(--transition);
+            font-weight: 500;
+        }
+
+        .card:hover .btn-read {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        /* Modal Fix */
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            z-index: 2000;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .modal-content {
+            background: var(--card);
+            max-width: 800px;
+            width: 100%;
+            border-radius: 30px;
+            padding: 40px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            position: relative;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        #modal-desc {
+            white-space: pre-wrap;
+            line-height: 1.8;
+            color: #cbd5e1;
+            font-size: 1.1rem;
+        }
+
+        @media (max-width: 600px) {
+            .controls {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .search-box {
+                min-width: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <a href="index.html" class="back-btn"><i class="fas fa-arrow-right"></i> العودة للرئيسية</a>
+        <h2 style="margin:0; font-size: 1.3rem;">مركز المحتوى</h2>
+    </header>
+
+    <div class="controls">
+        <div class="search-box">
+            <i class="fas fa-search"></i>
+            <input type="text" id="searchInput" placeholder="ابحث عن مقال أو فيديو..." onkeyup="filterArticles()">
+        </div>
+        <div class="brand-filters">
+            <select id="brandFilter" onchange="filterArticles()"
+                style="background: var(--card); color: #fff; padding: 12px 20px; border-radius: 12px; border: 1px solid #1e293b; cursor: pointer;">
+                <option value="all">كل العلامات التجارية</option>
+                <option value="muthri">مقالات مُثري</option>
+                <option value="advaz">مقالات أدفاز</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="grid" id="all-articles-container">
+        </div>
+    </div>
+
+    <div id="article-modal" class="modal" onclick="closeModal()">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <i class="fas fa-times" onclick="closeModal()"
+                style="position:absolute; top:25px; left:25px; cursor:pointer; font-size:22px; color: var(--dim)"></i>
+            <div id="modal-body"></div>
+        </div>
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+
+    <script>
+        // نفس إعدادات Firebase الخاصة بك
+        const firebaseConfig = {
+            apiKey: "AIzaSyBMUqKSQwHBFEi3HCRhBm4cGa3wP2FUMMU",
+            authDomain: "muthri-advaz-portal.firebaseapp.com",
+            projectId: "muthri-advaz-portal",
+            storageBucket: "muthri-advaz-portal.firebasestorage.app",
+            messagingSenderId: "284717348325",
+            appId: "1:284717348325:web:8ef1bac8ef9639ff34ab0c"
+        };
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+
+        let allArticles = [];
+
+        async function loadAllArticles() {
+            const snapshot = await db.collection('articles').orderBy('order', 'asc').get();
+            allArticles = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+            renderArticles(allArticles);
+        }
+
+        function renderMedia(url) {
+            if (!url) return '<div class="media-wrap"></div>';
+            if (url.includes('youtube.com') || url.includes('youtu.be')) {
+                let id = url.split('v=')[1] || url.split('/').pop();
+                return `<iframe src="https://www.youtube.com/embed/${id.split('&')[0]}" allowfullscreen></iframe>`;
+            }
+            if (url.includes('catbox.moe') || url.match(/\.(mp4|webm|mov)$/)) {
+                return `<video controls preload="metadata"><source src="${url}" type="video/mp4"></video>`;
+            }
+            return `<img src="${url}" loading="lazy" onerror="this.src='https://via.placeholder.com/400x250'">`;
+        }
+
+        function renderArticles(data) {
+            const container = document.getElementById('all-articles-container');
+            if (data.length === 0) {
+                container.innerHTML = `<div style="grid-column: 1/-1; text-align: center; padding: 50px; color: var(--dim);">لا توجد نتائج تطابق بحثك</div>`;
+                return;
+            }
+
+            container.innerHTML = data.map(art => `
+                <div class="card" data-brand="${art.type}">
+                    <div class="media-wrap">${renderMedia(art.img)}</div>
+                    <div class="card-content">
+                        <span class="badge ${art.type === 'muthri' ? 'badge-muthri' : 'badge-advaz'}">
+                            ${art.type === 'muthri' ? 'مُثري' : 'أدفاز'}
+                        </span>
+                        <h3>${art.title}</h3>
+                        <button class="btn-read" onclick="viewFull('${art.title}', '${art.img}', '${encodeURIComponent(art.desc)}')">
+                            عرض التفاصيل <i class="fas fa-chevron-left" style="font-size: 10px; margin-right: 5px;"></i>
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function filterArticles() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            const brandTerm = document.getElementById('brandFilter').value;
+
+            const filtered = allArticles.filter(art => {
+                const matchesSearch = art.title.toLowerCase().includes(searchTerm);
+                const matchesBrand = brandTerm === 'all' || art.type === brandTerm;
+                return matchesSearch && matchesBrand;
+            });
+
+            renderArticles(filtered);
+        }
+
+        function viewFull(t, m, d) {
+            document.getElementById('modal-body').innerHTML = `
+                <div class="media-wrap" style="height:380px; border-radius: 20px; margin-bottom: 25px;">${renderMedia(m)}</div>
+                <h2 style="margin-bottom:20px; color: var(--accent)">${t}</h2>
+                <div id="modal-desc">${decodeURIComponent(d)}</div>
+            `;
+            document.getElementById('article-modal').style.display = 'flex';
+        }
+
+        function closeModal() { document.getElementById('article-modal').style.display = 'none'; }
+
+        // التحميل عند فتح الصفحة
+        window.onload = loadAllArticles;
+    </script>
+</body>
+
+</html>
