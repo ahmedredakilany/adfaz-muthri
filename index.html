@@ -630,6 +630,10 @@
         function handleLogout() { location.reload(); }
         function clearInputs() { document.querySelectorAll('.form-input').forEach(i => i.value = ""); document.querySelectorAll('input[type="hidden"]').forEach(i => i.value = ""); }
         window.onload = () => changeBrand('muthri');
+
+
+        // داخل وظيفة handleLogin
+        localStorage.setItem('isAdmin', 'true');
     </script>
 </body>
 
